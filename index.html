@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HERO.IO - We Build Productive Apps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #7C3AED;
+      --purple-light: #8B5CF6;
+      --purple-dark: #5B21B6;
+      --green: #10B981;
+      --dark-navy: #0F172A;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --bg: #F1F5F9;
+      --white: #FFFFFF;
+      --border: #E2E8F0;
+      --orange: #F97316;
+      --yellow: #F59E0B;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-dark); }
+    h1,h2,h3,h4,h5 { font-family: 'Syne', sans-serif; }
+
+    /* Navbar */
+    .navbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      padding: 0 2rem;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; cursor: pointer; }
+    .logo-icon { width: 36px; height: 36px; }
+    .logo-text { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--text-dark); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text-dark); font-size: 0.95rem; font-weight: 500; padding: 4px 0; border-bottom: 2px solid transparent; transition: all 0.2s; cursor: pointer; }
+    .nav-links a.active { color: var(--purple); border-bottom-color: var(--purple); }
+    .nav-links a:hover { color: var(--purple); }
+    .contribute-btn { background: var(--purple); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-family: 'Syne', sans-serif; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; transition: background 0.2s; text-decoration: none; }
+    .contribute-btn:hover { background: var(--purple-dark); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text-dark); border-radius: 2px; transition: all 0.3s; }
+
+    /* Hero Section */
+    .hero { text-align: center; padding: 80px 2rem 0; background: var(--bg); }
+    .hero h1 { font-size: clamp(2.5rem, 5vw, 3.8rem); font-weight: 800; line-height: 1.15; color: var(--text-dark); }
+    .hero h1 span { color: var(--purple); }
+    .hero p { margin: 1.2rem auto; max-width: 560px; color: var(--text-muted); font-size: 1rem; line-height: 1.7; }
+    .hero-btns { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
+    .btn-store { display: flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 10px; border: 1.5px solid var(--border); background: white; font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: none; color: var(--text-dark); transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+    .btn-store:hover { border-color: var(--purple); box-shadow: 0 4px 12px rgba(124,58,237,0.15); }
+    .hero-image-wrapper { max-width: 500px; margin: 0 auto; position: relative; }
+    .hero-image-wrapper img { width: 100%; }
+    .floating-icon { position: absolute; width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    /* Stats Section */
+    .stats-section { background: var(--purple); padding: 60px 2rem; text-align: center; }
+    .stats-section h2 { color: white; font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 40px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); max-width: 800px; margin: 0 auto; gap: 2rem; }
+    .stat-card { color: white; }
+    .stat-label { font-size: 0.85rem; opacity: 0.8; margin-bottom: 8px; }
+    .stat-value { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; }
+    .stat-sub { font-size: 0.8rem; opacity: 0.7; margin-top: 6px; }
+
+    /* Sections */
+    .section { padding: 80px 2rem; }
+    .section-header { text-align: center; margin-bottom: 40px; }
+    .section-header h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 800; }
+    .section-header p { color: var(--text-muted); margin-top: 10px; }
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    /* App Cards Grid */
+    .apps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .app-card { background: white; border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.25s; border: 1px solid var(--border); }
+    .app-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+    .app-card-img { width: 100%; aspect-ratio: 1; object-fit: cover; background: #e2e8f0; }
+    .app-card-body { padding: 12px; }
+    .app-card-title { font-family: 'Syne', sans-serif; font-size: 0.875rem; font-weight: 600; margin-bottom: 8px; line-height: 1.3; color: var(--text-dark); }
+    .app-card-meta { display: flex; justify-content: space-between; align-items: center; }
+    .meta-downloads { display: flex; align-items: center; gap: 4px; color: var(--green); font-size: 0.8rem; font-weight: 600; }
+    .meta-rating { display: flex; align-items: center; gap: 4px; color: var(--yellow); font-size: 0.8rem; font-weight: 600; }
+
+    /* Show All Button */
+    .show-all-wrapper { text-align: center; margin-top: 40px; }
+    .btn-primary { background: var(--purple); color: white; border: none; padding: 14px 40px; border-radius: 8px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.2s; }
+    .btn-primary:hover { background: var(--purple-dark); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(124,58,237,0.3); }
+
+    /* All Apps Page */
+    .page-title-section { text-align: center; padding: 60px 2rem 40px; }
+    .page-title-section h1 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; }
+    .page-title-section p { color: var(--text-muted); margin-top: 10px; }
+    .apps-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; max-width: 1200px; margin: 0 auto 24px; flex-wrap: wrap; gap: 12px; }
+    .apps-count { font-weight: 600; font-family: 'Syne', sans-serif; font-size: 1.1rem; }
+    .search-container { position: relative; }
+    .search-input { padding: 10px 16px 10px 40px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; width: 280px; transition: border-color 0.2s; background: white; }
+    .search-input:focus { border-color: var(--purple); }
+    .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+    /* App Details Page */
+    .app-details-wrapper { max-width: 1200px; margin: 0 auto; padding: 60px 2rem; }
+    .app-details-top { display: grid; grid-template-columns: 200px 1fr; gap: 40px; align-items: start; margin-bottom: 60px; }
+    .app-detail-img { width: 200px; height: 200px; object-fit: cover; border-radius: 20px; border: 1px solid var(--border); }
+    .app-detail-info h1 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; margin-bottom: 8px; }
+    .app-detail-company { color: var(--text-muted); margin-bottom: 20px; }
+    .app-stats-row { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 24px; }
+    .app-stat { display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 0.95rem; }
+    .install-btn { background: var(--purple); color: white; border: none; padding: 14px 40px; border-radius: 10px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.2s; }
+    .install-btn:hover:not(:disabled) { background: var(--purple-dark); transform: translateY(-1px); }
+    .install-btn:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
+
+    /* Rating Chart */
+    .chart-section { background: white; border-radius: 16px; padding: 32px; margin-bottom: 40px; border: 1px solid var(--border); }
+    .chart-section h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 24px; }
+    .rating-bars { display: flex; flex-direction: column; gap: 12px; }
+    .rating-row { display: flex; align-items: center; gap: 12px; }
+    .rating-label { width: 60px; font-size: 0.85rem; color: var(--text-muted); text-align: right; }
+    .rating-bar-track { flex: 1; height: 10px; background: #f1f5f9; border-radius: 99px; overflow: hidden; }
+    .rating-bar-fill { height: 100%; background: linear-gradient(90deg, var(--orange), var(--yellow)); border-radius: 99px; transition: width 0.8s ease; }
+    .rating-count { width: 50px; font-size: 0.8rem; color: var(--text-muted); }
+
+    /* Description */
+    .desc-section { background: white; border-radius: 16px; padding: 32px; border: 1px solid var(--border); }
+    .desc-section h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 16px; }
+    .desc-section p { color: var(--text-muted); line-height: 1.8; font-size: 0.95rem; }
+
+    /* Installation Page */
+    .installation-list { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+    .installed-card { background: white; border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 16px; border: 1px solid var(--border); }
+    .installed-img { width: 72px; height: 72px; border-radius: 12px; object-fit: cover; background: #e2e8f0; flex-shrink: 0; }
+    .installed-info { flex: 1; }
+    .installed-info h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
+    .installed-meta { display: flex; align-items: center; gap: 16px; }
+    .uninstall-btn { background: var(--green); color: white; border: none; padding: 10px 24px; border-radius: 8px; font-family: 'Syne', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .uninstall-btn:hover { background: #059669; }
+
+    /* Sort Dropdown */
+    .sort-dropdown { padding: 10px 16px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; background: white; cursor: pointer; outline: none; color: var(--text-dark); }
+
+    /* No Apps Found */
+    .no-apps { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .no-apps h3 { font-family: 'Syne', sans-serif; font-size: 1.3rem; margin-bottom: 8px; }
+
+    /* Error Pages */
+    .error-page { min-height: calc(100vh - 64px - 160px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; }
+    .error-page img { width: min(380px, 80vw); margin-bottom: 32px; }
+    .error-page h1 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; margin-bottom: 12px; color: var(--text-dark); }
+    .error-page p { color: var(--text-muted); margin-bottom: 28px; max-width: 440px; }
+
+    /* Footer */
+    footer { background: var(--dark-navy); color: white; padding: 40px 2rem 20px; }
+    .footer-top { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
+    .footer-logo { display: flex; align-items: center; gap: 8px; }
+    .footer-logo span { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; }
+    .social-links h4 { font-family: 'Syne', sans-serif; font-size: 0.9rem; margin-bottom: 12px; }
+    .social-icons { display: flex; gap: 10px; }
+    .social-icon { width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; color: white; text-decoration: none; font-size: 0.8rem; }
+    .social-icon:hover { background: var(--purple); }
+    .footer-bottom { text-align: center; font-size: 0.85rem; opacity: 0.6; }
+
+    /* Toast */
+    .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+    .toast { background: var(--text-dark); color: white; padding: 14px 20px; border-radius: 10px; font-size: 0.9rem; font-family: 'DM Sans', sans-serif; box-shadow: 0 8px 24px rgba(0,0,0,0.2); animation: slideIn 0.3s ease; display: flex; align-items: center; gap: 10px; min-width: 260px; }
+    .toast.success { border-left: 4px solid var(--green); }
+    .toast.error { border-left: 4px solid #ef4444; }
+    @keyframes slideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+    .toast.hide { animation: slideOut 0.3s ease forwards; }
+
+    /* Loading */
+    .loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; z-index: 999; backdrop-filter: blur(4px); }
+    .spinner { width: 48px; height: 48px; border: 4px solid var(--border); border-top-color: var(--purple); border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Toolbar for All Apps */
+    .all-apps-toolbar { max-width: 1200px; margin: 0 auto 24px; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+
+    /* Responsive */
+    @media (max-width: 1024px) { .apps-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 768px) {
+      .apps-grid { grid-template-columns: repeat(2, 1fr); }
+      .app-details-top { grid-template-columns: 1fr; }
+      .app-detail-img { width: 140px; height: 140px; }
+      .stats-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: white; padding: 1rem 2rem; border-bottom: 1px solid var(--border); gap: 1rem; }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      .footer-top { flex-direction: column; gap: 20px; }
+      .search-input { width: 220px; }
+    }
+    @media (max-width: 480px) {
+      .apps-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero h1 { font-size: 2rem; }
+      .search-input { width: 180px; }
+      .navbar { padding: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+// ===== DATA =====
+const appsData = [
+  { id:1, title:"Forest: Focus For Productivity", companyName:"Seekrtech", image:"https://placehold.co/400x400/4ade80/fff?text=Forest", description:"Forest is an app helping you stay focused. Plant a tree when you want to focus — your tree grows while you work. Leaving the app withers it. Forest also partners with Trees for the Future to plant real trees when users spend virtual coins earned in the app. Over 1 million trees have been planted worldwide thanks to Forest users.", size:258, reviews:54000, ratingAvg:4.9, downloads:9000000, ratings:[{name:"1 star",count:200},{name:"2 star",count:400},{name:"3 star",count:1200},{name:"4 star",count:8000},{name:"5 star",count:44200}] },
+  { id:2, title:"SmPlan: ToDo List With Reminder", companyName:"SmartPlan Inc", image:"https://placehold.co/400x400/f59e0b/fff?text=SmPlan", description:"SmPlan is a powerful yet simple task manager that helps you plan your day, set reminders, and achieve your goals. With its intuitive interface and powerful features, you'll never miss a deadline again. Organize tasks by priority, set recurring reminders, and track your productivity over time.", size:145, reviews:32000, ratingAvg:4.7, downloads:9200000, ratings:[{name:"1 star",count:300},{name:"2 star",count:500},{name:"3 star",count:2000},{name:"4 star",count:9200},{name:"5 star",count:20000}] },
+  { id:3, title:"FLIP - Focus Timer For Study", companyName:"FLIP Labs", image:"https://placehold.co/400x400/6366f1/fff?text=FLIP", description:"FLIP is an innovative focus timer that uses your phone's flip gesture to start and stop sessions. Flip your phone face down to start focusing, flip it back to pause. Track your study hours, compete with friends, and build strong study habits.", size:98, reviews:41000, ratingAvg:4.8, downloads:8800000, ratings:[{name:"1 star",count:150},{name:"2 star",count:350},{name:"3 star",count:1500},{name:"4 star",count:9000},{name:"5 star",count:30000}] },
+  { id:4, title:"Pomocat - Cute Pomodoro Timer", companyName:"CatApps", image:"https://placehold.co/400x400/fbbf24/1a1a1a?text=Pomocat", description:"Pomocat is an adorable Pomodoro timer featuring a cute cat companion. Use the proven Pomodoro technique to boost your productivity. Your cat friend grows and levels up as you complete more sessions.", size:76, reviews:28000, ratingAvg:4.9, downloads:7500000, ratings:[{name:"1 star",count:100},{name:"2 star",count:250},{name:"3 star",count:900},{name:"4 star",count:7500},{name:"5 star",count:19250}] },
+  { id:5, title:"Time Planner: Schedule & Tasks", companyName:"TimePlan Co", image:"https://placehold.co/400x400/ec4899/fff?text=TimePlan", description:"Time Planner combines a beautiful daily planner with powerful task management. Schedule your day hour by hour, set task priorities, and get smart reminders. The app analyzes your productivity patterns and suggests optimal work schedules.", size:210, reviews:19000, ratingAvg:4.6, downloads:6200000, ratings:[{name:"1 star",count:250},{name:"2 star",count:600},{name:"3 star",count:1800},{name:"4 star",count:6350},{name:"5 star",count:10000}] },
+  { id:6, title:"Morning Habits - Daily Routine", companyName:"HabitForge", image:"https://placehold.co/400x400/10b981/fff?text=Habits", description:"Build powerful morning routines with Morning Habits. Design your perfect morning ritual, track consistency streaks, and transform your life one morning at a time. The app includes guided routines, motivational quotes, and habit analytics.", size:134, reviews:22000, ratingAvg:4.7, downloads:5900000, ratings:[{name:"1 star",count:180},{name:"2 star",count:420},{name:"3 star",count:1400},{name:"4 star",count:6000},{name:"5 star",count:14000}] },
+  { id:7, title:"Focus Plant: Pomodoro Forest", companyName:"GreenFocus", image:"https://placehold.co/400x400/84cc16/fff?text=FocusPlant", description:"Focus Plant combines the Pomodoro technique with a virtual garden. Complete focus sessions to grow beautiful plants and create stunning gardens. Real trees are planted for every 100 sessions completed.", size:182, reviews:35000, ratingAvg:4.8, downloads:8100000, ratings:[{name:"1 star",count:120},{name:"2 star",count:380},{name:"3 star",count:1500},{name:"4 star",count:8000},{name:"5 star",count:25000}] },
+  { id:8, title:"Alarmy - Alarm Clock & Sleep", companyName:"Delight Room", image:"https://placehold.co/400x400/f97316/fff?text=Alarmy", description:"Alarmy is the world's most annoying alarm clock (in the best way). To dismiss your alarm, complete missions like shaking your phone, solving math, or scanning a QR code. Also includes sleep tracking features.", size:295, reviews:68000, ratingAvg:4.5, downloads:12000000, ratings:[{name:"1 star",count:1200},{name:"2 star",count:2000},{name:"3 star",count:5800},{name:"4 star",count:18000},{name:"5 star",count:41000}] },
+  { id:9, title:"Todoist: To-Do List & Planner", companyName:"Doist Inc", image:"https://placehold.co/400x400/ef4444/fff?text=Todoist", description:"Todoist is the world's #1 task manager. Organize work and personal life with tasks, projects, labels, and filters. Collaborate with teammates, set priorities and recurring due dates. Works across all your devices in perfect sync.", size:320, reviews:95000, ratingAvg:4.8, downloads:15000000, ratings:[{name:"1 star",count:500},{name:"2 star",count:1000},{name:"3 star",count:3500},{name:"4 star",count:20000},{name:"5 star",count:70000}] },
+  { id:10, title:"Headspace: Meditation & Sleep", companyName:"Headspace Inc", image:"https://placehold.co/400x400/a855f7/fff?text=Headspace", description:"Headspace is your guide to mindfulness and meditation. Reduce stress, improve focus, sleep better, or simply feel happier. Hundreds of themed meditation sessions, sleep sounds, and focus music available for all levels.", size:275, reviews:82000, ratingAvg:4.9, downloads:13500000, ratings:[{name:"1 star",count:250},{name:"2 star",count:600},{name:"3 star",count:2150},{name:"4 star",count:19000},{name:"5 star",count:60000}] },
+  { id:11, title:"Habitica: Gamify Your Tasks", companyName:"HabitRPG Inc", image:"https://placehold.co/400x400/8b5cf6/fff?text=Habitica", description:"Habitica turns your real life into a role-playing game. Create your character, complete daily tasks to earn XP and gold, battle monsters with your party, and level up your productivity. Over 4 million players worldwide.", size:188, reviews:47000, ratingAvg:4.7, downloads:9800000, ratings:[{name:"1 star",count:300},{name:"2 star",count:700},{name:"3 star",count:2000},{name:"4 star",count:14000},{name:"5 star",count:30000}] },
+  { id:12, title:"RescueTime - Focus & Analytics", companyName:"RescueTime LLC", image:"https://placehold.co/400x400/0ea5e9/fff?text=RescueTime", description:"RescueTime automatically tracks time spent on apps, websites, and activities. Get detailed reports on productivity patterns, set goals, and block distracting websites with the FocusTime feature.", size:156, reviews:31000, ratingAvg:4.6, downloads:7200000, ratings:[{name:"1 star",count:220},{name:"2 star",count:580},{name:"3 star",count:2200},{name:"4 star",count:8000},{name:"5 star",count:20000}] },
+  { id:13, title:"Daily Planner - Diary & Goals", companyName:"DayPlanner Co", image:"https://placehold.co/400x400/f59e0b/1a1a1a?text=Daily", description:"Daily Planner is your digital diary, goal tracker, and life organizer combined. Write journal entries, set weekly and monthly goals, track your moods, and create vision boards. AI provides personalized productivity insights.", size:142, reviews:24000, ratingAvg:4.7, downloads:6500000, ratings:[{name:"1 star",count:150},{name:"2 star",count:450},{name:"3 star",count:1400},{name:"4 star",count:7000},{name:"5 star",count:15000}] },
+  { id:14, title:"TickTick: To-Do List & Calendar", companyName:"Appest Inc", image:"https://placehold.co/400x400/3b82f6/fff?text=TickTick", description:"TickTick combines a powerful to-do list with a built-in calendar, habit tracker, and Pomodoro timer. Manage tasks with due dates, reminders, priorities, and tags. Collaborate seamlessly with others.", size:230, reviews:58000, ratingAvg:4.8, downloads:11000000, ratings:[{name:"1 star",count:400},{name:"2 star",count:800},{name:"3 star",count:2800},{name:"4 star",count:14000},{name:"5 star",count:40000}] },
+  { id:15, title:"BeReal - Your friends for real", companyName:"BeReal SAS", image:"https://placehold.co/400x400/1a1a1a/fff?text=BeReal", description:"BeReal is a unique social network that challenges you to share your unfiltered life. Once a day at a random time you will receive a notification — you have 2 minutes to capture and share a photo with both cameras simultaneously.", size:89, reviews:43000, ratingAvg:4.4, downloads:10200000, ratings:[{name:"1 star",count:900},{name:"2 star",count:1600},{name:"3 star",count:4500},{name:"4 star",count:11000},{name:"5 star",count:25000}] },
+  { id:16, title:"Notion - Notes, Docs, Projects", companyName:"Notion Labs", image:"https://placehold.co/400x400/1a1a1a/fff?text=Notion", description:"Notion is the all-in-one workspace for notes, tasks, wikis, and databases. Write, plan, and get organized with infinite flexibility. Create personal wikis, track projects, manage databases, and collaborate — all in one place.", size:312, reviews:112000, ratingAvg:4.7, downloads:18000000, ratings:[{name:"1 star",count:800},{name:"2 star",count:1500},{name:"3 star",count:5700},{name:"4 star",count:24000},{name:"5 star",count:80000}] }
+];
+
+// ===== STATE =====
+let currentPage = 'home';
+let currentAppId = null;
+let installedApps = JSON.parse(localStorage.getItem('heroio_installed') || '[]');
+let toasts = [];
+let searchQuery = '';
+let sortOrder = '';
+let isLoading = false;
+let navOpen = false;
+
+// ===== HELPERS =====
+const formatNum = n => n >= 1000000 ? (n/1000000).toFixed(0)+'M' : n >= 1000 ? (n/1000).toFixed(0)+'K' : n;
+const isInstalled = id => installedApps.some(a => a.id === id);
+
+function saveInstalled() {
+  localStorage.setItem('heroio_installed', JSON.stringify(installedApps));
+}
+
+function showToast(msg, type='success') {
+  const id = Date.now();
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span>${type === 'success' ? '✅' : '❌'}</span><span>${msg}</span>`;
+  toast.id = `toast-${id}`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('hide');
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+function navigate(page, appId=null) {
+  isLoading = true;
+  render();
+  setTimeout(() => {
+    currentPage = page;
+    currentAppId = appId;
+    isLoading = false;
+    searchQuery = '';
+    sortOrder = '';
+    navOpen = false;
+    render();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }, 400);
+}
+
+// ===== LOGO SVG =====
+const logoSVG = `<svg class="logo-icon" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M30 5 L55 47 L5 47 Z" fill="#2563EB" stroke="#60A5FA" stroke-width="1"/>
+  <path d="M30 12 L50 44 L10 44 Z" fill="#3B82F6" stroke="#93C5FD" stroke-width="0.8"/>
+  <path d="M30 20 L44 42 L16 42 Z" fill="#60A5FA" stroke="#BAE6FD" stroke-width="0.6"/>
+  <path d="M30 28 L38 40 L22 40 Z" fill="#93C5FD"/>
+</svg>`;
+
+// ===== NAVBAR =====
+function renderNavbar() {
+  return `
+  <nav class="navbar">
+    <div class="logo" onclick="navigate('home')">${logoSVG}<span class="logo-text">HERO.IO</span></div>
+    <ul class="nav-links ${navOpen ? 'open' : ''}">
+      <li><a class="${currentPage==='home'?'active':''}" onclick="navigate('home')">Home</a></li>
+      <li><a class="${currentPage==='apps'?'active':''}" onclick="navigate('apps')">Apps</a></li>
+      <li><a class="${currentPage==='installation'?'active':''}" onclick="navigate('installation')">Installation</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="https://github.com" target="_blank" class="contribute-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        Contribute
+      </a>
+      <button class="hamburger" onclick="toggleNav()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>`;
+}
+
+function toggleNav() { navOpen = !navOpen; document.querySelector('.nav-links').classList.toggle('open'); }
+
+// ===== FOOTER =====
+function renderFooter() {
+  return `
+  <footer>
+    <div class="footer-top container">
+      <div class="footer-logo">${logoSVG}<span>HERO.IO</span></div>
+      <div class="social-links">
+        <h4>Social Links</h4>
+        <div class="social-icons">
+          <a href="#" class="social-icon" title="Twitter/X">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="#" class="social-icon" title="LinkedIn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="#" class="social-icon" title="Facebook">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">Copyright &copy; 2025 - All right reserved</div>
+  </footer>`;
+}
+
+// ===== APP CARD =====
+function renderAppCard(app) {
+  return `
+  <div class="app-card" onclick="navigate('details', ${app.id})">
+    <img class="app-card-img" src="${app.image}" alt="${app.title}" loading="lazy"/>
+    <div class="app-card-body">
+      <div class="app-card-title">${app.title}</div>
+      <div class="app-card-meta">
+        <span class="meta-downloads">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
+          ${formatNum(app.downloads)}
+        </span>
+        <span class="meta-rating">⭐ ${app.ratingAvg}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ===== HOME PAGE =====
+function renderHome() {
+  const top8 = appsData.slice(0,8);
+  return `
+  <section class="hero">
+    <div class="container">
+      <h1>We Build<br><span>Productive</span> Apps</h1>
+      <p>At HERO.IO, we craft innovative apps designed to make everyday life simpler, smarter, and more exciting. Our goal is to turn your ideas into digital experiences that truly make an impact.</p>
+      <div class="hero-btns">
+        <a href="https://play.google.com/store" target="_blank" class="btn-store">
+          <svg width="20" height="20" viewBox="0 0 512 512" fill="none"><path d="M48 28.5L280 256 48 483.5V28.5Z" fill="#4CAF50"/><path d="M48 28.5l232 227.5-116 113.3L48 28.5Z" fill="#81C784"/><path d="M48 483.5L164 370.2 280 256 48 483.5Z" fill="#F44336"/><path d="M280 256L464 196l-184 60Z" fill="#FFC107"/><path d="M280 256L464 316L280 256Z" fill="#FF9800"/></svg>
+          Google Play
+        </a>
+        <a href="https://apps.apple.com" target="_blank" class="btn-store">
+          <svg width="20" height="20" viewBox="0 0 814 1000" fill="#555"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-37.8-155.5-127.4C46 376.6 0 317.3 0 260.4 0 81.5 126.8-6.1 252.5-6.1c49.5 0 110.2 33.2 156 33.2 43.9 0 113.8-38.4 166.4-38.4 35.6 0 130 3.4 191.1 105.6z"/></svg>
+          App Store
+        </a>
+      </div>
+      <div class="hero-image-wrapper">
+        <img src="https://placehold.co/400x600/1e1b4b/fff?text=App+Preview" alt="Hero App Preview" style="border-radius:32px;box-shadow:0 32px 80px rgba(0,0,0,0.2);"/>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-section">
+    <div class="container">
+      <h2>Trusted By Millions, Built For You</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Downloads</div>
+          <div class="stat-value">29.6M</div>
+          <div class="stat-sub">21% More Than Last Month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Reviews</div>
+          <div class="stat-value">906K</div>
+          <div class="stat-sub">46% More Than Last Month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active Apps</div>
+          <div class="stat-value">132+</div>
+          <div class="stat-sub">31 More Will Launch</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Trending Apps</h2>
+        <p>Explore All Trending Apps on the Market developed by us</p>
+      </div>
+      <div class="apps-grid">
+        ${top8.map(renderAppCard).join('')}
+      </div>
+      <div class="show-all-wrapper">
+        <button class="btn-primary" onclick="navigate('apps')">Show All</button>
+      </div>
+    </div>
+  </section>`;
+}
+
+// ===== ALL APPS PAGE =====
+function renderApps() {
+  let filtered = appsData.filter(a => a.title.toLowerCase().includes(searchQuery.toLowerCase()));
+  if (sortOrder === 'high-low') filtered = [...filtered].sort((a,b) => b.downloads - a.downloads);
+  if (sortOrder === 'low-high') filtered = [...filtered].sort((a,b) => a.downloads - b.downloads);
+
+  return `
+  <div class="page-title-section">
+    <h1>Our All Applications</h1>
+    <p>Explore All Trending Apps on the Market developed by us</p>
+  </div>
+  <div class="all-apps-toolbar">
+    <span class="apps-count">${filtered.length} Apps Found</span>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <div class="search-container">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="search-input" type="text" placeholder="Search apps..." value="${searchQuery}" oninput="handleSearch(this.value)"/>
+      </div>
+      <select class="sort-dropdown" onchange="handleSort(this.value)">
+        <option value="">Sort By Downloads</option>
+        <option value="high-low" ${sortOrder==='high-low'?'selected':''}>High to Low</option>
+        <option value="low-high" ${sortOrder==='low-high'?'selected':''}>Low to High</option>
+      </select>
+    </div>
+  </div>
+  <div class="container" style="padding: 0 2rem 80px;">
+    ${filtered.length === 0
+      ? `<div class="no-apps"><h3>No Apps Found</h3><p>Try a different search term.</p></div>`
+      : `<div class="apps-grid">${filtered.map(renderAppCard).join('')}</div>`
+    }
+  </div>`;
+}
+
+let searchTimeout;
+function handleSearch(val) {
+  isLoading = true;
+  document.getElementById('main-content').style.opacity = '0.6';
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    searchQuery = val;
+    isLoading = false;
+    document.getElementById('main-content').style.opacity = '1';
+    document.getElementById('main-content').innerHTML = renderApps();
+  }, 300);
+}
+
+function handleSort(val) {
+  sortOrder = val;
+  document.getElementById('main-content').innerHTML = renderApps();
+}
+
+// ===== APP DETAILS PAGE =====
+function renderDetails() {
+  const app = appsData.find(a => a.id === currentAppId);
+  if (!app) return renderAppNotFound();
+  const installed = isInstalled(app.id);
+  const maxRating = Math.max(...app.ratings.map(r => r.count));
+
+  return `
+  <div class="app-details-wrapper">
+    <div class="app-details-top">
+      <img class="app-detail-img" src="${app.image}" alt="${app.title}"/>
+      <div class="app-detail-info">
+        <h1>${app.title}</h1>
+        <p class="app-detail-company">${app.companyName}</p>
+        <div class="app-stats-row">
+          <span class="app-stat" style="color:#10b981;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
+            ${formatNum(app.downloads)}
+          </span>
+          <span class="app-stat" style="color:#f59e0b;">⭐ ${app.ratingAvg}</span>
+          <span class="app-stat" style="color:#6366f1;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            ${formatNum(app.reviews)} Reviews
+          </span>
+          <span class="app-stat" style="color:#64748b;">${app.size} MB</span>
+        </div>
+        <button class="install-btn" id="install-btn-${app.id}" onclick="handleInstall(${app.id})" ${installed?'disabled':''}>
+          ${installed ? 'Installed' : 'Install'}
+        </button>
+      </div>
+    </div>
+
+    <div class="chart-section">
+      <h2>Ratings</h2>
+      <div class="rating-bars">
+        ${[...app.ratings].reverse().map(r => `
+          <div class="rating-row">
+            <span class="rating-label">${r.name}</span>
+            <div class="rating-bar-track">
+              <div class="rating-bar-fill" style="width:${(r.count/maxRating)*100}%"></div>
+            </div>
+            <span class="rating-count">${formatNum(r.count)}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="desc-section">
+      <h2>Description</h2>
+      <p>${app.description}</p>
+    </div>
+  </div>`;
+}
+
+function handleInstall(id) {
+  const app = appsData.find(a => a.id === id);
+  if (!app || isInstalled(id)) return;
+  installedApps.push(app);
+  saveInstalled();
+  const btn = document.getElementById(`install-btn-${id}`);
+  if (btn) { btn.disabled = true; btn.textContent = 'Installed'; }
+  showToast(`✅ ${app.title} installed successfully!`, 'success');
+}
+
+// ===== INSTALLATION PAGE =====
+function renderInstallation() {
+  return `
+  <div class="page-title-section">
+    <h1>Your Installed Apps</h1>
+    <p>Explore All Trending Apps on the Market developed by us</p>
+  </div>
+  <div style="max-width:900px;margin:0 auto;padding:0 2rem 80px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+      <span class="apps-count">${installedApps.length} Apps Found</span>
+      <select class="sort-dropdown" onchange="handleInstallSort(this.value)">
+        <option value="">Sort By Size</option>
+        <option value="size-high">High to Low</option>
+        <option value="size-low">Low to High</option>
+      </select>
+    </div>
+    <div class="installation-list" id="installation-list">
+      ${renderInstalledList(installedApps)}
+    </div>
+  </div>`;
+}
+
+function renderInstalledList(list) {
+  if (list.length === 0) return `<div class="no-apps"><h3>No Apps Installed</h3><p>Go to the <a href="#" onclick="navigate('apps')" style="color:var(--purple);text-decoration:none;font-weight:600;">Apps page</a> to install some apps.</p></div>`;
+  return list.map(app => `
+    <div class="installed-card" id="installed-${app.id}">
+      <img class="installed-img" src="${app.image}" alt="${app.title}"/>
+      <div class="installed-info">
+        <h3>${app.title}</h3>
+        <div class="installed-meta">
+          <span class="meta-downloads"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg> ${formatNum(app.downloads)}</span>
+          <span class="meta-rating">⭐ ${app.ratingAvg}</span>
+          <span style="color:#64748b;font-size:0.85rem;">${app.size} MB</span>
+        </div>
+      </div>
+      <button class="uninstall-btn" onclick="handleUninstall(${app.id})">Uninstall</button>
+    </div>`).join('');
+}
+
+function handleInstallSort(val) {
+  let sorted = [...installedApps];
+  if (val === 'size-high') sorted.sort((a,b) => b.size - a.size);
+  if (val === 'size-low') sorted.sort((a,b) => a.size - b.size);
+  document.getElementById('installation-list').innerHTML = renderInstalledList(sorted);
+}
+
+function handleUninstall(id) {
+  const app = installedApps.find(a => a.id === id);
+  installedApps = installedApps.filter(a => a.id !== id);
+  saveInstalled();
+  const el = document.getElementById(`installed-${id}`);
+  if (el) { el.style.opacity='0'; el.style.transform='translateX(20px)'; el.style.transition='all 0.3s'; setTimeout(()=>el.remove(),300); }
+  document.querySelector('.apps-count').textContent = `${installedApps.length} Apps Found`;
+  if (app) showToast(`${app.title} uninstalled.`, 'error');
+}
+
+// ===== ERROR PAGES =====
+function renderError404() {
+  return `
+  <div class="error-page">
+    <img src="https://placehold.co/380x320/f1f5f9/7c3aed?text=404" alt="404" style="border-radius:16px;opacity:0.8;"/>
+    <h1>Oops, page not found!</h1>
+    <p>The page you are looking for is not available.</p>
+    <button class="btn-primary" onclick="navigate('home')">Go Back!</button>
+  </div>`;
+}
+
+function renderAppNotFound() {
+  return `
+  <div class="error-page">
+    <img src="https://placehold.co/380x320/fff9e6/f97316?text=NOT+FOUND" alt="Not Found" style="border-radius:16px;"/>
+    <h1>OPPS!! APP NOT FOUND</h1>
+    <p>The App you are requesting is not found on our system. Please try another apps</p>
+    <button class="btn-primary" onclick="navigate('apps')">Go Back!</button>
+  </div>`;
+}
+
+// ===== MAIN RENDER =====
+function render() {
+  const app = document.getElementById('app');
+  let content = '';
+
+  if (isLoading) {
+    app.innerHTML = `
+      ${renderNavbar()}
+      <div class="loading-overlay"><div class="spinner"></div></div>
+      ${renderFooter()}
+    `;
+    return;
+  }
+
+  switch(currentPage) {
+    case 'home': content = renderHome(); break;
+    case 'apps': content = renderApps(); break;
+    case 'details': content = renderDetails(); break;
+    case 'installation': content = renderInstallation(); break;
+    default: content = renderError404();
+  }
+
+  app.innerHTML = `
+    ${renderNavbar()}
+    <main id="main-content" style="min-height:calc(100vh - 64px - 160px);transition:opacity 0.2s;">${content}</main>
+    ${renderFooter()}
+  `;
+}
+
+// Handle hash/history for SPA
+window.addEventListener('popstate', () => render());
+
+// ===== TOAST CONTAINER =====
+document.addEventListener('DOMContentLoaded', () => {
+  const tc = document.createElement('div');
+  tc.id = 'toast-container';
+  tc.className = 'toast-container';
+  document.body.appendChild(tc);
+  render();
+});
+</script>
+</body>
+</html>
