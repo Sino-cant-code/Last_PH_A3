@@ -263,6 +263,7 @@ function showToast(msg, type='success') {
 }
 
 function navigate(page, appId=null) {
+  window.location.hash = page + (appId ? '-' + appId : '');
   isLoading = true;
   render();
   setTimeout(() => {
@@ -433,6 +434,11 @@ function renderApps() {
   <div class="all-apps-toolbar">
     <span class="apps-count">(${filtered.length}) Apps Found</span>
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+  <select class="sort-dropdown" onchange="handleSort(this.value)">
+    <option value="">Sort By Downloads</option>
+    <option value="high-low">High to Low</option>
+    <option value="low-high">Low to High</option>
+  </select>
       <div class="search-container">
         <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <input class="search-input" type="text" placeholder="search Apps" value="${searchQuery}" oninput="handleSearch(this.value)"/>
@@ -650,6 +656,13 @@ function render() {
 window.addEventListener('popstate', () => render());
 
 document.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash.replace('#','');
+
+  if (hash) {
+    const parts = hash.split('-');
+    currentPage = parts[0];
+    currentAppId = parts[1] ? parseInt(parts[1]) : null;
+  }
   const tc = document.createElement('div');
   tc.id = 'toast-container';
   tc.className = 'toast-container';
